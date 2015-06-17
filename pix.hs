@@ -5,6 +5,10 @@ import qualified Haste.JSString as Str
 import Pix.Config
 import Pix.Backend
 import Haste.Events
+import Haste.Foreign
+
+goTo :: JSString -> IO ()
+goTo = ffi "(function(s){window.location.href = s;})"
 
 cfg = defaultConfig
 
@@ -23,4 +27,5 @@ main = runApp (mkConfig "localhost" 24681) $ do
       btn `onEvent` Click $ \_ -> do
         Just fd <- getFileData f 0
         onServer $ upload <.> fd
+        liftIO $ goTo "pix.html"
       return ()
